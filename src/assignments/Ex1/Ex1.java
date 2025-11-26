@@ -58,15 +58,39 @@ public class Ex1 {
 	 * @return an array of doubles representing the coefficients of the polynom.
 	 */
 	public static double[] PolynomFromPoints(double[] xx, double[] yy) {
-		double [] ans = null;
+		double [] ans =null;
+        if ( xx==null || yy==null ) {
+            return null;
+        }
+        if (xx.length!=yy.length) { return null; }
+        if (xx.length<2 || xx.length>3) { return null; }
+
 		int lx = xx.length;
 		int ly = yy.length;
-		if(xx!=null && yy!=null && lx==ly && lx>1 && lx<4) {
+        double x0=xx[0];
+        double y0=yy[0];
+        double x1=xx[1];
+        double y1=yy[1];
 		/** add you code below
-
 		/////////////////// */
-		}
-		return ans;
+        if (xx.length==2) {
+            double m=(y1-y0)/(x1-x0);
+            double b = y1-m*x1;
+            ans = new double[] {m,b};
+
+        }
+        if(xx.length==3) {
+         double x2=xx[2];
+         double y2=yy[2];
+         double a=(y0*(x1-x2)+y1*(x2-x0)+y2*(x0-x1))/((x0-x1)*(x0-x2)*(x1-x2));
+         double b =(y0*y0*(x1-x2)+y1*y1*(x2-x0)+y2*y2*(x0-x1))/((x0-x1)*(x0-x2)*(x1-x2)-a*(x0+x1+x2));
+         double c=y0-a*x0+b*y0;
+         ans = new double[] {a,b,c};
+        }
+
+        return ans;
+
+
 	}
 	/** Two polynomials functions are equal if and only if they have the same values f(x) for n+1 values of x,
 	 * where n is the max degree (over p1, p2) - up to an epsilon (aka EPS) value.
@@ -77,7 +101,12 @@ public class Ex1 {
 	public static boolean equals(double[] p1, double[] p2) {
 		boolean ans = true;
         /** add you code below
-
+         */
+        int maxd=Math.max(p1.length,p2.length);
+        for (int i = 0; i <= maxd; i++) {
+            double x =i;
+            if(Math.abs( f(p1 ,x)-f(p2 ,x ))>EPS) {ans=false;}
+        }
          /////////////////// */
 		return ans;
 	}
@@ -93,11 +122,21 @@ public class Ex1 {
 		if(poly.length==0) {ans="0";}
 		else {
             /** add you code below
+             */
+for (int i=poly.length-1;i>=0;i--){
+    if(poly[i]==0) continue;
+    if (poly[i]>0 && !ans.isEmpty()) ans+= "+";
+    if (poly[i]<0) ans+= "";
+    if (i==0){ ans += poly[i];}
+    if(i==1){ans += poly[i] +"x";
+    }else {ans += poly[i]+"x^"+i;}
+    }
+}
 
-             /////////////////// */
+        /////////////////// */
+        return ans.trim();
 		}
-		return ans;
-	}
+
 	/**
 	 * Given two polynomial functions (p1,p2), a range [x1,x2] and an epsilon eps. This function computes an x value (x1<=x<=x2)
 	 * for which |p1(x) -p2(x)| < eps, assuming (p1(x1)-p2(x1)) * (p1(x2)-p2(x2)) <= 0.
@@ -109,11 +148,16 @@ public class Ex1 {
 	 * @return an x value (x1<=x<=x2) for which |p1(x) - p2(x)| < eps.
 	 */
 	public static double sameValue(double[] p1, double[] p2, double x1, double x2, double eps) {
-		double ans = x1;
         /** add you code below
-
+         */
+        double[]diff=new double[Math.max(p1.length,p2.length)];
+        for (int i=0;i<diff.length;i++) {
+            double v1 = i < p1.length ? p1[i] : 0;
+            double v2 = i < p2.length ? p2[i] : 0;
+            diff[i] = v1 - v2;
+        }
          /////////////////// */
-		return ans;
+		return root_rec(diff, x1, x2, eps);
 	}
 	/**
 	 * Given a polynomial function (p), a range [x1,x2] and an integer with the number (n) of sample points.
@@ -128,8 +172,9 @@ public class Ex1 {
 	 * @return the length approximation of the function between f(x1) and f(x2).
 	 */
 	public static double length(double[] p, double x1, double x2, int numberOfSegments) {
-		double ans = x1;
+		double ans = 0;
         /** add you code below
+         */
 
          /////////////////// */
 		return ans;
