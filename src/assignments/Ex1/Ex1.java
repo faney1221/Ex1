@@ -1,4 +1,4 @@
-package assignments.Ex1;
+  package assignments.Ex1;
 
 /**
  * Introduction to Computer Science 2026, Ariel University,
@@ -175,7 +175,17 @@ for (int i=poly.length-1;i>=0;i--){
 		double ans = 0;
         /** add you code below
          */
+double step =(x2-x1)/numberOfSegments;
+for (int i=0;i<numberOfSegments;i++) {
+    double startx = x1+i * step;
+    double endx = x2+(i+1)*step;
 
+    double starty=f(p,startx);
+    double endy = f(p,endx);
+
+    double segmLength=Math.sqrt(step*step +(endy-starty)*(endy-starty));
+    ans += segmLength;
+}
          /////////////////// */
 		return ans;
 	}
@@ -194,7 +204,16 @@ for (int i=poly.length-1;i>=0;i--){
 	public static double area(double[] p1,double[]p2, double x1, double x2, int numberOfTrapezoid) {
 		double ans = 0;
         /** add you code below
+         */
+double width = (x2-x1)/numberOfTrapezoid;
+for (int i=0;i<numberOfTrapezoid;i++) {
+    double rightx = x1+i*width;
+    double leftx = x1+(i+1)*width;
 
+    double h1=Math.abs(f(p1,leftx)-f(p2,leftx));
+    double h2=Math.abs(f(p1,rightx)-f(p2,rightx));
+    ans += width*(h1+h2)/2;
+}
          /////////////////// */
 		return ans;
 	}
@@ -207,12 +226,64 @@ for (int i=poly.length-1;i>=0;i--){
 	 * @return
 	 */
 	public static double[] getPolynomFromString(String p) {
-		double [] ans = ZERO;//  -1.0x^2 +3.0x +2.0
+        double[] ans = ZERO;//  -1.0x^2 +3.0x +2.0
         /** add you code below
+         */
+        if (p == null || p.trim().isEmpty() || p.equals("0")) return ZERO;
+        p = p.replace(" ", "");
+        int maxDegree = 0;
+        String[] terms = p.split("(?=[-+])");
+        for(String term : terms) {
+            if(term.isEmpty()) continue;
 
-         /////////////////// */
-		return ans;
-	}
+            if(term.contains("x^")) {
+                int caretPos = term.indexOf("^");
+                int degree = Integer.parseInt(term.substring(caretPos + 1));
+                maxDegree = Math.max(maxDegree, degree);
+            } else if(term.contains("x")) {
+                maxDegree = Math.max(maxDegree, 1);
+            }
+        }
+        ans = new double[maxDegree + 1];
+
+        for (String term : terms) {
+                if (term.isEmpty()) continue;
+
+                if (term.contains("x^")) {
+                    // Term like "-1.0x^2" or "+3.5x^3"
+                    int xPos = term.indexOf("x");
+                    int caretPos = term.indexOf("^");
+
+                    String coeffStr = term.substring(0, xPos);
+                    if (coeffStr.equals("+") || coeffStr.equals("")) coeffStr = "1";
+                    if (coeffStr.equals("-")) coeffStr = "-1";
+
+                    double coeff = Double.parseDouble(coeffStr);
+                    int degree = Integer.parseInt(term.substring(caretPos + 1));
+                    ans[degree] = coeff;
+                } else if (term.contains("x")) {
+                    // Term like "3x" or "-2.0x"
+                    int xPos = term.indexOf("x");
+                    String coeffStr = term.substring(0, xPos);
+
+                    if (coeffStr.equals("+") || coeffStr.equals("")) coeffStr = "1";
+                    if (coeffStr.equals("-")) coeffStr = "-1";
+
+                    double coeff = Double.parseDouble(coeffStr);
+                    ans[1] = coeff;
+
+                } else {
+                    // Constant term like "5.0" or "-3"
+                    double coeff = Double.parseDouble(term);
+                    ans[0] = coeff;
+                }
+            }
+
+
+        return ans;
+        /////////////////// */
+    }
+
 	/**
 	 * This function computes the polynomial function which is the sum of two polynomial functions (p1,p2)
 	 * @param p1
@@ -220,9 +291,16 @@ for (int i=poly.length-1;i>=0;i--){
 	 * @return
 	 */
 	public static double[] add(double[] p1, double[] p2) {
-		double [] ans = ZERO;//
         /** add you code below
-
+         */
+int max=Math.max(p1.length,p2.length);
+double[]ans = new double[max];
+for( int i=0; i<p1.length;i++) {
+    ans[i]=p1[i];
+}
+for( int i=0; i<p2.length;i++) {
+    ans[i]+=p2[i];
+}
          /////////////////// */
 		return ans;
 	}
@@ -235,9 +313,17 @@ for (int i=poly.length-1;i>=0;i--){
 	public static double[] mul(double[] p1, double[] p2) {
 		double [] ans = ZERO;//
         /** add you code below
-
+         */
+        int len=p1.length+p2.length-1;
+        double[] mul = new double[len];
+      if (p1.length==0||p2.length==0) return ans;
+      for (int i=0;i<p1.length;i++) {
+          for (int j=0;j<p2.length;j++) {
+              mul[i+j]=p1[i]*p2[j];
+          }
+      }
          /////////////////// */
-		return ans;
+		return mul;
 	}
 	/**
 	 * This function computes the derivative of the p0 polynomial function.
@@ -245,9 +331,14 @@ for (int i=poly.length-1;i>=0;i--){
 	 * @return
 	 */
 	public static double[] derivative (double[] po) {
-		double [] ans = ZERO;//
         /** add you code below
+         */
+if (po.length<=1) return ZERO;
+double [] ans = new double[po.length-1];
+for (int i=1;i<po.length;i++) {
+    ans[i-1]=i*po[i];
 
+}
          /////////////////// */
 		return ans;
 	}
