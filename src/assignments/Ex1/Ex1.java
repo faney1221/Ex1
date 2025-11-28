@@ -1,6 +1,9 @@
   package assignments.Ex1;
 
-/**
+  import java.util.ArrayList;
+  import java.util.Collections;
+
+  /**
  * Introduction to Computer Science 2026, Ariel University,
  * Ex1: arrays, static functions and JUnit
  * https://docs.google.com/document/d/1GcNQht9rsVVSt153Y8pFPqXJVju56CY4/edit?usp=sharing&ouid=113711744349547563645&rtpof=true&sd=true
@@ -8,7 +11,7 @@
  * This class represents a set of static methods on a polynomial functions - represented as an array of doubles.
  * The array {0.1, 0, -3, 0.2} represents the following polynomial function: 0.2x^3-3x^2+0.1
  * This is the main Class you should implement (see "add your code below")
- *
+ *a
  * @author boaz.benmoshe
 
  */
@@ -105,7 +108,7 @@ public class Ex1 {
         int maxd=Math.max(p1.length,p2.length);
         for (int i = 0; i <= maxd; i++) {
             double x =i;
-            if(Math.abs( f(p1 ,x)-f(p2 ,x ))>EPS) {ans=false;}
+            if(Math.abs( f(p1 ,x)-f(p2 ,x ))>EPS) {return false;}
         }
          /////////////////// */
 		return ans;
@@ -202,23 +205,65 @@ for (int i=0;i<numberOfSegments;i++) {
 	 * @return the approximated area between the two polynomial functions within the [x1,x2] range.
 	 */
 	public static double area(double[] p1,double[]p2, double x1, double x2, int numberOfTrapezoid) {
-		double ans = 0;
+        double totalArea = 0;
         /** add you code below
          */
-double width = (x2-x1)/numberOfTrapezoid;
+        ArrayList<Double> intersections = new ArrayList();
+        intersections.add(x1);
+        intersections.add(x2);
+        int check = 100;
+        double step = (x2 - x1) / check;
+        for (int i = 0; i < check; i++) {
+            double leftx = x1 + i * step;
+            double rightx = x1 + (i + 1) * step;
+
+            double difLeft = f(p1, leftx) - f(p2, leftx);
+            double difRight = f(p1, rightx) - f(p2, rightx);
+
+            if (difLeft * difRight <= 0) {
+                double intersection = sameValue(p1, p2, leftx, rightx, EPS);
+
+
+                boolean alrdeyExist = false;
+                for (double exist : intersections) {
+                    if (Math.abs(exist - intersection) <= EPS) {
+                        alrdeyExist = true;
+                        break;
+                    }
+                }
+                if (!alrdeyExist) {
+                    intersections.add(intersection);
+
+                }
+            }
+        }
+        Collections.sort(intersections);
+        for (int i = 0; i < intersections.size() - 1; i++) {
+            double subx1 = intersections.get(i);
+            double subx2 = intersections.get(i + 1);
+            double subArea = areaInsubRange(p1, p2, subx1, subx1, numberOfTrapezoid);
+            totalArea += subArea;
+
+        }
+        return totalArea;
+    }
+private static  double areaInsubRange(double[]p1,double[]p2,double x1,double x2,int numberOfTrapezoid) {
+
+        double area = 0;
+        double width = (x2-x1)/numberOfTrapezoid;
 for (int i=0;i<numberOfTrapezoid;i++) {
     double rightx = x1+i*width;
     double leftx = x1+(i+1)*width;
 
     double h1=Math.abs(f(p1,leftx)-f(p2,leftx));
     double h2=Math.abs(f(p1,rightx)-f(p2,rightx));
-    ans += width*(h1+h2)/2;
+    area += width*(h1+h2)/2;
 }
          /////////////////// */
-		return ans;
+		return area;
 	}
 	/**
-	 * This function computes the array representation of a polynomial function from a String
+	 * This function computes     the array representation of a polynomial function from a String
 	 * representation. Note:given a polynomial function represented as a double array,
 	 * getPolynomFromString(poly(p)) should return an array equals to p.
 	 * 
