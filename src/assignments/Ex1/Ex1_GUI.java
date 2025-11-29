@@ -73,7 +73,7 @@ public class Ex1_GUI {
 			double y12 = Ex1.f(p2, x);
 			double[] xx = {x0,x,x,x0};
 			double[] yy = {y01,y11,y12,y02};
-			StdDraw.setPenColor(StdDraw.ORANGE);
+			StdDraw.setPenColor(StdDraw.PINK);
 			StdDraw.filledPolygon(xx, yy);
 			StdDraw.setPenColor(StdDraw.BLACK);
 			StdDraw.polygon(xx, yy);
