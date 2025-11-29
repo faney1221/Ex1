@@ -79,16 +79,16 @@ public class Ex1 {
         if (xx.length==2) {
             double m=(y1-y0)/(x1-x0);
             double b = y1-m*x1;
-            ans = new double[] {m,b};
+            ans = new double[] {b,m};
 
         }
         if(xx.length==3) {
          double x2=xx[2];
          double y2=yy[2];
          double a=(y0*(x1-x2)+y1*(x2-x0)+y2*(x0-x1))/((x0-x1)*(x0-x2)*(x1-x2));
-         double b =(y0*y0*(x1-x2)+y1*y1*(x2-x0)+y2*y2*(x0-x1))/((x0-x1)*(x0-x2)*(x1-x2)-a*(x0+x1+x2));
-         double c=y0-a*x0+b*y0;
-         ans = new double[] {a,b,c};
+         double b =(y0-y1)/(x0-x1)-a*(x0-x1);
+         double c=y0-a*x0*x0-b*y0;
+         ans = new double[] {c,b,a};
         }
 
         return ans;
@@ -129,10 +129,15 @@ public class Ex1 {
 for (int i=poly.length-1;i>=0;i--){
     if(poly[i]==0) continue;
     if (poly[i]>0 && !ans.isEmpty()) ans+= "+";
+
     if (poly[i]<0) ans+= "";
-    if (i==0){ ans += poly[i];}
-    if(i==1){ans += poly[i] +"x";
-    }else {ans += poly[i]+"x^"+i;}
+
+    if (i==0){
+        ans += poly[i];}
+
+     else if(i==1){ans += poly[i] +"x";
+    }
+     else {ans += poly[i]+"x^"+i;}
     }
 }
 
@@ -181,7 +186,7 @@ for (int i=poly.length-1;i>=0;i--){
 double step =(x2-x1)/numberOfSegments;
 for (int i=0;i<numberOfSegments;i++) {
     double startx = x1+i * step;
-    double endx = x2+(i+1)*step;
+    double endx = x1+(i+1)*step;
 
     double starty=f(p,startx);
     double endy = f(p,endx);
@@ -241,7 +246,7 @@ for (int i=0;i<numberOfSegments;i++) {
         for (int i = 0; i < intersections.size() - 1; i++) {
             double subx1 = intersections.get(i);
             double subx2 = intersections.get(i + 1);
-            double subArea = areaInsubRange(p1, p2, subx1, subx1, numberOfTrapezoid);
+            double subArea = areaInsubRange(p1, p2, subx1, subx2, numberOfTrapezoid);
             totalArea += subArea;
 
         }
@@ -252,8 +257,8 @@ private static  double areaInsubRange(double[]p1,double[]p2,double x1,double x2,
         double area = 0;
         double width = (x2-x1)/numberOfTrapezoid;
 for (int i=0;i<numberOfTrapezoid;i++) {
-    double rightx = x1+i*width;
-    double leftx = x1+(i+1)*width;
+    double leftx = x1+i*width;
+    double rightx = x1+(i+1)*width;
 
     double h1=Math.abs(f(p1,leftx)-f(p2,leftx));
     double h2=Math.abs(f(p1,rightx)-f(p2,rightx));
@@ -364,7 +369,7 @@ for( int i=0; i<p2.length;i++) {
       if (p1.length==0||p2.length==0) return ans;
       for (int i=0;i<p1.length;i++) {
           for (int j=0;j<p2.length;j++) {
-              mul[i+j]=p1[i]*p2[j];
+              mul[i+j]+=p1[i]*p2[j];
           }
       }
          /////////////////// */
