@@ -565,7 +565,7 @@ class Ex1Test {
 
         @Test
         void testEquals_WithTrailingZeros() {
-            // {1, 2, 0, 0} שווה ל-{1, 2}
+            // {1, 2, 0, 0}  ={1, 2}
             double[] p1 = {1, 2, 0, 0};
             double[] p2 = {1, 2};
             assertTrue(Ex1.equals(p1, p2));
@@ -629,7 +629,7 @@ class Ex1Test {
 
         @Test
         void testEquals_OneCoefficientDifferent() {
-            //  only one value isnt same
+            //  only one value isn't same
             double[] p1 = {1, 2, 3};
             double[] p2 = {1, 2, 4};
             assertFalse(Ex1.equals(p1, p2));
@@ -666,7 +666,7 @@ class Ex1Test {
 
         @Test
         void testPoly_ConstantOnly() {
-            // בודק פולינום קבוע
+            // cheack the polynom
             double[] poly = {5.5};
             String result = Ex1.poly(poly);
             assertTrue(result.contains("5.5"));
@@ -675,7 +675,7 @@ class Ex1Test {
 
         @Test
         void testPoly_LinearOnly() {
-            // בודק פולינום לינארי: 0 + 3x
+        //: 0 + 3x
             double[] poly = {0, 3};
             String result = Ex1.poly(poly);
             assertTrue(result.contains("3") && result.contains("x"));
@@ -683,7 +683,7 @@ class Ex1Test {
 
         @Test
         void testPoly_HighDegree() {
-            // בודק פולינום ממעלה גבוהה
+            // cheak polynom with the highest power
             double[] poly = {1, 0, 0, 0, 2}; // 1 + 2x^4
             String result = Ex1.poly(poly);
             assertTrue(result.contains("x^4"));
@@ -692,7 +692,7 @@ class Ex1Test {
 
         @Test
         void testPoly_AllNegative() {
-            // בודק פולינום עם כל המקדמים שליליים
+        //cheak the first value is negaive
             double[] poly = {-1, -2, -3};
             String result = Ex1.poly(poly);
             assertTrue(result.contains("-1"));
@@ -702,24 +702,24 @@ class Ex1Test {
 
         @Test
         void testPoly_ZeroPolynomial() {
-            // בודק פולינום אפס
+            // polynom 0
             String result = Ex1.poly(Ex1.ZERO);
             assertTrue(result.equals("0") || result.isEmpty());
         }
 
         @Test
         void testPoly_EmptyArray() {
-            // בודק מערך ריק
+            // chicke empty arry
             double[] empty = {};
             String result = Ex1.poly(empty);
             assertEquals("0", result);
         }
 
-        // ========== טסטים לפונקציה getPolynomFromString ==========
+        // ========== test getPolynomFromString ==========
 
         @Test
         void testGetPolynomFromString_Simple() {
-            // בודק פרסור של מחרוזת פשוטה
+            // cheack simple string
             String input = "3.1x^2 +2.3x -1.1";
             double[] result = Ex1.getPolynomFromString(input);
 
@@ -730,7 +730,6 @@ class Ex1Test {
 
         @Test
         void testGetPolynomFromString_RoundTrip() {
-            // בודק שהמרה למחרוזת וחזרה נותנת את אותו פולינום
             double[] original = {-1.1, 2.3, 3.1};
             String str = Ex1.poly(original);
             double[] parsed = Ex1.getPolynomFromString(str);
@@ -740,7 +739,6 @@ class Ex1Test {
 
         @Test
         void testGetPolynomFromString_WithSpaces() {
-            // בודק פרסור עם רווחים
             String input = "2x^2 + 3x - 1";
             double[] result = Ex1.getPolynomFromString(input);
 
@@ -751,7 +749,6 @@ class Ex1Test {
 
         @Test
         void testGetPolynomFromString_ConstantOnly() {
-            // בודק פרסור של קבוע בלבד
             String input = "5";
             double[] result = Ex1.getPolynomFromString(input);
 
@@ -761,7 +758,6 @@ class Ex1Test {
 
         @Test
         void testGetPolynomFromString_NoSpaces() {
-            // בודק פרסור ללא רווחים
             String input = "3x^2+2x-1";
             double[] result = Ex1.getPolynomFromString(input);
 
@@ -772,7 +768,6 @@ class Ex1Test {
 
         @Test
         void testGetPolynomFromString_NegativeFirst() {
-            // בודק פרסור כשהמקדם הראשון שלילי
             String input = "-x^2 +x +1";
             double[] result = Ex1.getPolynomFromString(input);
 
@@ -783,7 +778,6 @@ class Ex1Test {
 
         @Test
         void testGetPolynomFromString_ImplicitOne() {
-            // בודק פרסור כשהמקדם הוא 1 (לא רשום)
             String input = "x^2 +x";
             double[] result = Ex1.getPolynomFromString(input);
 
@@ -794,7 +788,6 @@ class Ex1Test {
 
         @Test
         void testGetPolynomFromString_ImplicitMinusOne() {
-            // בודק פרסור כשהמקדם הוא -1 (רק מינוס)
             String input = "-x^2 -x";
             double[] result = Ex1.getPolynomFromString(input);
 
@@ -804,8 +797,7 @@ class Ex1Test {
         }
 
         @Test
-        void testGetPolynomFromString_Zero() {
-            // בודק פרסור של אפס
+        void testGetPolynomFromString_Zero(){
             String input = "0";
             double[] result = Ex1.getPolynomFromString(input);
             assertTrue(Ex1.equals(result, Ex1.ZERO));
@@ -813,15 +805,13 @@ class Ex1Test {
 
         @Test
         void testGetPolynomFromString_EmptyString() {
-            // בודק פרסור של מחרוזת ריקה
             String input = "";
             double[] result = Ex1.getPolynomFromString(input);
             assertTrue(Ex1.equals(result, Ex1.ZERO));
         }
 
         @Test
-        void testGetPolynomFromString_HighDegree() {
-            // בודק פרסור של מעלה גבוהה
+        void testGetPolynomFromString_HighDegree(){
             String input = "2x^5 -3x^3 +1";
             double[] result = Ex1.getPolynomFromString(input);
 
@@ -836,7 +826,6 @@ class Ex1Test {
 
         @Test
         void testGetPolynomFromString_DecimalCoefficients() {
-            // בודק פרסור עם מקדמים עשרוניים
             String input = "1.5x^2 +0.5x -2.3";
             double[] result = Ex1.getPolynomFromString(input);
 
@@ -845,27 +834,26 @@ class Ex1Test {
             assertEquals(1.5, result[2], Ex1.EPS);
         }
 
-        // ========== טסטים לפונקציה root_rec ==========
+        // ========== test root_rec ==========
 
         @Test
         void testRootRec_SimpleRoot() {
-            // בודק מציאת שורש של x - 2 = 0 (שורש ב-x=2)
+            //  x - 2 = 0 (root-x=2)
             double[] poly = {-2, 1}; // x - 2
             double root = Ex1.root_rec(poly, 0, 5, Ex1.EPS);
             assertEquals(2, root, Ex1.EPS);
         }
 
         @Test
-        void testRootRec_QuadraticRoot() {
-            // בודק מציאת שורש של פולינום ריבועי
-            double[] poly = {-2, 0, 1}; // x^2 - 2 (שורש ב-√2)
+        void testRootRec_QuadraticR(){
+            double[] poly = {-2, 0, 1}; // x^2 - 2 (-√2)
             double root = Ex1.root_rec(poly, 0, 2, Ex1.EPS);
             assertEquals(Math.sqrt(2), root, Ex1.EPS);
         }
 
         @Test
         void testRootRec_NegativeRoot() {
-            // בודק מציאת שורש שלילי: x + 3 = 0 (שורש ב-x=-3)
+            // : x + 3 = 0 (root-x=-3)
             double[] poly = {3, 1}; // x + 3
             double root = Ex1.root_rec(poly, -5, 0, Ex1.EPS);
             assertEquals(-3, root, Ex1.EPS);
@@ -873,7 +861,7 @@ class Ex1Test {
 
         @Test
         void testRootRec_AtZero() {
-            // בודק מציאת שורש ב-0: x = 0
+            // 0: x = 0
             double[] poly = {0, 1}; // x
             double root = Ex1.root_rec(poly, -1, 1, Ex1.EPS);
             assertEquals(0, root, Ex1.EPS);
@@ -881,7 +869,7 @@ class Ex1Test {
 
         @Test
         void testRootRec_CubicRoot() {
-            // בודק מציאת שורש של פולינום מעוקב: x^3 - 8 = 0 (שורש ב-2)
+        //: x^3 - 8 = 0 ( root 2)
             double[] poly = {-8, 0, 0, 1}; // x^3 - 8
             double root = Ex1.root_rec(poly, 0, 5, Ex1.EPS);
             assertEquals(2, root, 0.01);
@@ -889,17 +877,17 @@ class Ex1Test {
 
         @Test
         void testRootRec_FractionRoot() {
-            // בודק מציאת שורש שבר: 2x - 1 = 0 (שורש ב-0.5)
+            // check fraction: 2x - 1 = 0 ( root 0.5)
             double[] poly = {-1, 2}; // 2x - 1
             double root = Ex1.root_rec(poly, 0, 1, Ex1.EPS);
             assertEquals(0.5, root, Ex1.EPS);
         }
 
-        // ========== טסטים לפונקציה sameValue ==========
+        // ========== test sameValue ==========
 
         @Test
         void testSameValue_Symmetric() {
-            // בודק שהפונקציה סימטרית: sameValue(p1,p2) = sameValue(p2,p1)
+            // chake if the functionn is symmetric: sameValue(p1,p2) = sameValue(p2,p1)
             double[] p1 = {2, 2};
             double[] p2 = {-3, 0.61, 0.2};
             double x1 = -4, x2 = 0;
@@ -912,8 +900,8 @@ class Ex1Test {
 
         @Test
         void testSameValue_TwoLines() {
-            // בודק נקודת חיתוך של שני קווים: y=x ו-y=2-x
-            // נפגשים ב-x=1
+            // check if we have intersection in two line y=x and -y=2-x
+            //  connect at-x=1
             double[] p1 = {0, 1};   // y = x
             double[] p2 = {2, -1};  // y = 2 - x
             double intersection = Ex1.sameValue(p1, p2, 0, 3, Ex1.EPS);
@@ -923,8 +911,8 @@ class Ex1Test {
 
         @Test
         void testSameValue_ParabolaAndLine() {
-            // בודק חיתוך של פרבולה וקו: y=x^2 ו-y=x
-            // נפגשים ב-x=0 או x=1
+            // cheack if the intersection is parbula or straight: y=x^2 ו-y=x
+            // connect on x=0 or x=1
             double[] p1 = {0, 0, 1};  // y = x^2
             double[] p2 = {0, 1};     // y = x
             double intersection = Ex1.sameValue(p1, p2, 0.5, 2, Ex1.EPS);
@@ -934,17 +922,16 @@ class Ex1Test {
 
         @Test
         void testSameValue_SamePolynomial() {
-            // בודק שני פולינומים זהים - כל נקודה היא נקודת "חיתוך"
+            // cheak if two polynom are same
             double[] p = {1, 2, 3};
             double result = Ex1.sameValue(p, p, 0, 5, Ex1.EPS);
 
-            // כל נקודה בטווח תהיה תקינה
             assertTrue(result >= 0 && result <= 5);
         }
 
         @Test
         void testSameValue_NegativeRange() {
-            // בודק חיתוך בטווח שלילי
+            // cheak if the intersection is negative
             double[] p1 = {0, 1};   // y = x
             double[] p2 = {0, -1};  // y = -x
             double intersection = Ex1.sameValue(p1, p2, -2, 2, Ex1.EPS);
@@ -952,12 +939,12 @@ class Ex1Test {
             assertEquals(0, intersection, Ex1.EPS);
         }
 
-        // ========== טסטים לפונקציה length ==========
+        // =========== test length ==========
 
         @Test
         void testLength_StraightLine() {
-            // בודק אורך של קו ישר y = x מ-0 ל-1
-            // אורך צריך להיות √2 ≈ 1.414
+            // cheak length of straight lin y = x from-0 to-1
+            // the length shoud be √2 ≈ 1.414
             double[] poly = {0, 1}; // y = x
             double length = Ex1.length(poly, 0, 1, 100);
             assertEquals(Math.sqrt(2), length, 0.01);
@@ -965,37 +952,37 @@ class Ex1Test {
 
         @Test
         void testLength_Constant() {
-            // בודק אורך של פונקציה קבועה (קו אופקי)
+            // cheak the length is constant
             double[] poly = {5}; // y = 5
             double length = Ex1.length(poly, 0, 10, 100);
-            // אורך צריך להיות 10 (רק בכיוון x)
+            //length shoud be10(only the x side)
             assertEquals(10, length, Ex1.EPS);
         }
 
         @Test
         void testLength_VerticalChange() {
-            // בודק אורך של פונקציה עם שינוי אנכי בלבד נטו
-            // למשל 2x מ-0 ל-5: אורך צריך להיות גדול מ-10
+            // cheak the length
+            // example 2x from-0 to-5: the length shoud be graeter than from-10
             double[] poly = {0, 2}; // y = 2x
             double length = Ex1.length(poly, 0, 5, 100);
 
-            // אורך הפונקציה: √(5² + 10²) = √125 ≈ 11.18
+            // the length: √(5² + 10²) = √125 ≈ 11.18
             assertEquals(Math.sqrt(125), length, 0.1);
         }
 
         @Test
         void testLength_Parabola() {
-            // בודק אורך של פרבולה y = x^2 מ-0 ל-1
+            // cjeack length y = x^2 from-0 to-1
             double[] poly = {0, 0, 1}; // y = x^2
             double length = Ex1.length(poly, 0, 1, 1000);
 
-            // האורך המדויק הוא בערך 1.478
+            // the length ~ 1.478
             assertEquals(1.478, length, 0.01);
         }
 
         @Test
         void testLength_NegativeRange() {
-            // בודק אורך בטווח שלילי
+            // check negative length
             double[] poly = {0, 1}; // y = x
             double length = Ex1.length(poly, -2, -1, 100);
 
@@ -1004,32 +991,31 @@ class Ex1Test {
 
         @Test
         void testLength_MoreSegmentsBetterAccuracy() {
-            // בודק שיותר קטעים נותן דיוק טוב יותר
+            // cheack more segment
             double[] poly = {0, 0, 1}; // y = x^2
 
             double length10 = Ex1.length(poly, 0, 1, 10);
             double length100 = Ex1.length(poly, 0, 1, 100);
             double length1000 = Ex1.length(poly, 0, 1, 1000);
 
-            // כל חישוב עם יותר קטעים צריך להיות יותר מדויק
             assertTrue(Math.abs(length1000 - 1.478) < Math.abs(length100 - 1.478));
             assertTrue(Math.abs(length100 - 1.478) < Math.abs(length10 - 1.478));
         }
 
         @Test
         void testLength_ZeroLength() {
-            // בודק אורך כאשר x1 = x2
+            // check length x1 = x2
             double[] poly = {1, 2, 3};
             double length = Ex1.length(poly, 5, 5, 100);
 
             assertEquals(0, length, Ex1.EPS);
         }
 
-        // ========== טסטים לפונקציה area ==========
+        // ========== teset area ==========
 
         @Test
         void testArea_Symmetric() {
-            // בודק שחישוב שטח סימטרי: area(p1,p2) = area(p2,p1)
+            // : area(p1,p2) = area(p2,p1)
             double[] p1 = {2, 2};
             double[] p2 = {-3, 0.61, 0.2};
             double x1 = -4, x2 = 0;
@@ -1042,8 +1028,8 @@ class Ex1Test {
 
         @Test
         void testArea_SimpleTriangle() {
-            // בודק שטח בין y=0 ל-y=x בטווח [-1,2]
-            // זה משולש עם בסיס 3 וגובה 2, שטח = 2.5
+            // cheak between y=0 to-y=x  [-1,2]
+            // tringke base 3, hight 2,area = 2.5
             double[] p1 = Ex1.ZERO;
             double[] p2 = {0, 1};
 
@@ -1065,8 +1051,8 @@ class Ex1Test {
 
         @Test
         void testArea_Rectangle() {
-            // בודק שטח מלבן: בין y=0 ל-y=2 מ-x=0 ל-x=5
-            // שטח = 2 * 5 = 10
+            //chicke the rectanglte:between y=0 from-y=2 to-x=0 to-x=5
+            // area= 2 * 5 = 10
             double[] p1 = Ex1.ZERO;
             double[] p2 = {2};  // y = 2
 
@@ -1076,8 +1062,8 @@ class Ex1Test {
 
         @Test
         void testArea_TwoLines() {
-            // בודק שטח בין שני קווים: y=x ו-y=2x מ-0 ל-2
-            // השטח בניהם: ∫(2x-x)dx = ∫x dx = x²/2 מ-0 ל-2 = 2
+            // area between to line: y=x -y=2x from-0 to 2
+            // area between: ∫(2x-x)dx = ∫x dx = x²/2 from-0 to-2 = 2
             double[] p1 = {0, 1};   // y = x
             double[] p2 = {0, 2};   // y = 2x
 
@@ -1087,8 +1073,8 @@ class Ex1Test {
 
         @Test
         void testArea_ParabolaAndLine() {
-            // בודק שטח בין y=x^2 ו-y=x מ-0 ל-1
-            // ∫(x-x²)dx = x²/2 - x³/3 מ-0 ל-1 = 1/2 - 1/3 = 1/6 ≈ 0.167
+            //cheak the are of y=x^2 ו-y=x from-0 to-1
+            // ∫(x-x²)dx = x²/2 - x³/3 from-0 from-1 = 1/2 - 1/3 = 1/6 ≈ 0.16
             double[] p1 = {0, 0, 1};  // y = x^2
             double[] p2 = {0, 1};     // y = x
 
@@ -1098,18 +1084,18 @@ class Ex1Test {
 
         @Test
         void testArea_NegativeRange() {
-            // בודק שטח בטווח שלילי
+            //cheak the area is negative
             double[] p1 = Ex1.ZERO;
             double[] p2 = {0, 1};  // y = x
 
             double area = Ex1.area(p1, p2, -2, -1, 100);
-            // |∫x dx| מ--2 ל--1 = |x²/2| = |1/2 - 2| = 1.5
+            // |∫x dx| from--2 to--1 = |x²/2| = |1/2 - 2| = 1.5
             assertEquals(1.5, area, 0.01);
         }
 
         @Test
         void testArea_SamePolynomial() {
-            // בודק שטח בין פולינום לעצמו - צריך להיות 0
+            // check area of polynom itself =0
             double[] p = {1, 2, 3};
             double area = Ex1.area(p, p, 0, 5, 100);
 
@@ -1118,7 +1104,7 @@ class Ex1Test {
 
         @Test
         void testArea_MoreTrapezoidsBetterAccuracy() {
-            // בודק שיותר טרפזים נותן דיוק טוב יותר
+            // check more  trapiz
             double[] p1 = {0, 0, 1};
             double[] p2 = {0, 1};
 
@@ -1133,21 +1119,20 @@ class Ex1Test {
 
         @Test
         void testArea_CrossingFunctions() {
-            // בודק שטח כאשר הפונקציות חוצות זו את זו
-            // y=x ו-y=1-x נפגשות ב-x=0.5
+            // cheack the area when two polynom cross each other
             double[] p1 = {0, 1};   // y = x
             double[] p2 = {1, -1};  // y = 1-x
 
             double area = Ex1.area(p1, p2, 0, 1, 100);
-            // שטח המשולש: 0.5 * 0.5 * 1 = 0.25
+            // : 0.5 * 0.5 * 1 = 0.25
             assertEquals(0.25, area, 0.01);
         }
 
-        // ========== טסטים לפונקציה PolynomFromPoints ==========
+        // ===========test  PolynomFromPoints ==========
 
         @Test
         void testPolynomFromPoints_TwoPoints() {
-            // בודק יצירת פולינום מ-2 נקודות (קו ישר)
+            // check two point  polynom
             double[] xx = {0, 1};
             double[] yy = {2, 4};  // y = 2x + 2
 
@@ -1161,7 +1146,7 @@ class Ex1Test {
 
         @Test
         void testPolynomFromPoints_ThreePoints() {
-            // בודק יצירת פולינום מ-3 נקודות (פרבולה)
+            // cheack the parbula
             double[] xx = {0, 1, 2};
             double[] yy = {0, 1, 4};  // y = x^2
 
@@ -1169,7 +1154,7 @@ class Ex1Test {
 
             assertNotNull(poly);
             assertEquals(3, poly.length);
-            // בודק שהפולינום עובר דרך הנקודות
+            // cheack the poly pass all the point
             assertEquals(0, Ex1.f(poly, 0), 0.1);
             assertEquals(1, Ex1.f(poly, 1), 0.1);
             assertEquals(4, Ex1.f(poly, 2), 0.1);
@@ -1177,7 +1162,6 @@ class Ex1Test {
 
         @Test
         void testPolynomFromPoints_InvalidInput() {
-            // בודק טיפול בקלט לא תקין
             assertNull(Ex1.PolynomFromPoints(null, null));
             assertNull(Ex1.PolynomFromPoints(new double[]{1}, new double[]{1, 2}));
             assertNull(Ex1.PolynomFromPoints(new double[]{1, 2, 3, 4}, new double[]{1, 2, 3, 4}));
