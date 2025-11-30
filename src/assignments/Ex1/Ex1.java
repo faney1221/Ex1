@@ -86,8 +86,8 @@
                  double x2=xx[2];
                  double y2=yy[2];
                  double a=(y0*(x1-x2)+y1*(x2-x0)+y2*(x0-x1))/((x0-x1)*(x0-x2)*(x1-x2));
-                 double b =(y0-y1)/(x0-x1)-a*(x0-x1);
-                 double c=y0-a*x0*x0-b*y0;
+                 double b =(y0-y1)/(x0-x1)-a*(x0+x1);
+                 double c=y0-a*x0*x0-b*x0;
                  ans = new double[] {c,b,a};
                 }
         
@@ -128,7 +128,7 @@
                      */
         for (int i=poly.length-1;i>=0;i--){
             if(poly[i]==0) continue;
-            if (poly[i]>0 && !ans.isEmpty()) ans+= "+";
+            if ( !ans.isEmpty()&& poly[i]>0) ans+= "+";
         
             if (poly[i]<0) ans+= "";
         
@@ -140,11 +140,11 @@
              else {ans += poly[i]+"x^"+i;}
             }
         }
-        
+
                 /////////////////// */
                 return ans.trim();
                 }
-        
+
             /**
              * Given two polynomial functions (p1,p2), a range [x1,x2] and an epsilon eps. This function computes an x value (x1<=x<=x2)
              * for which |p1(x) -p2(x)| < eps, assuming (p1(x1)-p2(x1)) * (p1(x2)-p2(x2)) <= 0.
@@ -216,7 +216,7 @@
                 ArrayList<Double> intersections = new ArrayList();
                 intersections.add(x1);
                 intersections.add(x2);
-                int check = 100;
+                int check = 10000;
                 double step = (x2 - x1) / check;
                 for (int i = 0; i < check; i++) {
                     double leftx = x1 + i * step;
@@ -361,12 +361,11 @@
              * @return
              */
             public static double[] mul(double[] p1, double[] p2) {
-                double [] ans = ZERO;//
                 /** add you code below
                  */
+                if (p1.length == 0||p2.length==0) return ZERO;
                 int len=p1.length+p2.length-1;
                 double[] mul = new double[len];
-              if (p1.length==0||p2.length==0) return ans;
               for (int i=0;i<p1.length;i++) {
                   for (int j=0;j<p2.length;j++) {
                       mul[i+j]+=p1[i]*p2[j];
