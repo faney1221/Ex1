@@ -59,6 +59,8 @@
              * @param xx
              * @param yy
              * @return an array of doubles representing the coefficients of the polynom.
+            Creates a polynomial from 2 points (line) or 3 points (parabola).
+            If more or fewer points → returns null.
              */
             public static double[] PolynomFromPoints(double[] xx, double[] yy) {
                 double [] ans =null;
@@ -98,6 +100,8 @@
              * @param p1 first polynomial function
              * @param p2 second polynomial function
              * @return true iff p1 represents the same polynomial function as p2.
+
+             * Checks if two polynomials represent the same function by comparing f(x) at several x values.
              */
             public static boolean equals(double[] p1, double[] p2) {
                 boolean ans = true;
@@ -126,6 +130,9 @@
              * For example the array {2,0,3.1,-1.2} will be presented as the following String  "-1.2x^3 +3.1x^2 +2.0"
              * @param poly the polynomial function represented as an array of doubles
              * @return String representing the polynomial function:
+             *
+             * Creates a string representation of the polynomial.
+             * Example: {2, 0, 3} → "3x^2+2"
              */
             public static String poly(double[] poly) {
                 String ans = "";
@@ -164,6 +171,9 @@
              * @param x2 - maximal value of the range
              * @param eps - epsilon (positive small value (often 10^-3, or 10^-6).
              * @return an x value (x1<=x<=x2) for which |p1(x) - p2(x)| < eps.
+             *
+             * Finds x where p1(x) ≈ p2(x).
+             * It builds a difference polynomial p1 - p2 and calls root_rec.
              */
             public static double sameValue(double[] p1, double[] p2, double x1, double x2, double eps) {
                 /** add you code below
@@ -188,6 +198,9 @@
              * @param x2 - maximal value of the range
              * @param n - (A positive integer value (1,2,...).
              * @return the length approximation of the function between f(x1) and f(x2).
+             *
+             * Approximates the arc length of the polynomial curve between x1 and x2.
+             * Uses n straight-line segments:
              */
             public static double length(double[] p, double x1, double x2, int n) {
                 /** add you code below
@@ -237,6 +250,12 @@
              * @param x2 - maximal value of the range
              * @param numberOfTrapezoid - a natural number representing the number of Trapezoids between x1 and x2.
              * @return the approximated area between the two polynomial functions within the [x1,x2] range.
+             *
+             * Computes the area between two polynomials using trapezoids.
+             * Steps:
+             * Find intersection points.
+             * Split the range.
+             * Compute area in each sub-range using trapezoids
              */
             public static double area(double[] p1,double[]p2, double x1, double x2, int numberOfTrapezoid) {
                 double totalArea = 0;
@@ -321,6 +340,10 @@
              * getPolynomFromString(poly(p)) should return an array equals to p.
              * 
              * @param p - a String representing polynomial function.
+             *
+             *          arses a polynomial string like:
+             * "-1.2x^3 + 3.1x^2 + 2"
+             * and returns the coefficient array.
              * @return
              */
             public static double[] getPolynomFromString(String p) {
@@ -386,6 +409,8 @@
              * This function computes the polynomial function which is the sum of two polynomial functions (p1,p2)
              * @param p1
              * @param p2
+             *
+             * Adds two polynomials term by term.
              * @return
              */
             public static double[] add(double[] p1, double[] p2) {
@@ -406,6 +431,8 @@
              * This function computes the polynomial function which is the multiplication of two polynoms (p1,p2)
              * @param p1
              * @param p2
+             *
+             * Multiplies two polynomials using nested loops.
              * @return
              */
             public static double[] mul(double[] p1, double[] p2) {
@@ -425,6 +452,9 @@
             /**
              * This function computes the derivative of the p0 polynomial function.
              * @param po
+             * eturns the derivative polynomial.
+             * Example:
+             * {2, 3, 4} → derivative = {3, 8} (3 + 8x)
              * @return
              */
             public static double[] derivative (double[] po) {
