@@ -67,9 +67,7 @@
                 }
                 if (xx.length!=yy.length) { return null; }
                 if (xx.length<2 || xx.length>3) { return null; }
-        
-                int lx = xx.length;
-                int ly = yy.length;
+
                 double x0=xx[0];
                 double y0=yy[0];
                 double x1=xx[1];
@@ -105,14 +103,23 @@
                 boolean ans = true;
                 /** add you code below
                  */
-                int maxd=Math.max(p1.length,p2.length);
-                for (int i = 0; i <= maxd; i++) {
-                    double x =i;
-                    if(Math.abs( f(p1 ,x)-f(p2 ,x ))>EPS) {return false;}
+
+                    int maxDegree = Math.max(p1.length, p2.length);
+
+                    for (int i = 0; i <= maxDegree; i++) {
+                        double x = i;
+                        if (Math.abs(f(p1, x) - f(p2, x)) > EPS) return false;
+                    }
+                    return true;
                 }
+
+
+
+
+
+
                  /////////////////// */
-                return ans;
-            }
+
         
             /** 
              * Computes a String representing the polynomial function.
@@ -127,7 +134,7 @@
                     /** add you code below
                      */
         for (int i=poly.length-1;i>=0;i--){
-            if(poly[i]==0) continue;
+            if(poly[i]==0.0||poly[i]==-0.0) continue;
             if ( !ans.isEmpty()&& poly[i]>0) ans+= "+";
         
             if (poly[i]<0) ans+= "";
@@ -140,6 +147,9 @@
              else {ans += poly[i]+"x^"+i;}
             }
         }
+                if (ans.isEmpty()) {
+                    ans="0";
+                }
 
                 /////////////////// */
                 return ans.trim();
@@ -176,27 +186,46 @@
              * @param p - the polynomial function
              * @param x1 - minimal value of the range
              * @param x2 - maximal value of the range
-             * @param numberOfSegments - (A positive integer value (1,2,...).
+             * @param n - (A positive integer value (1,2,...).
              * @return the length approximation of the function between f(x1) and f(x2).
              */
-            public static double length(double[] p, double x1, double x2, int numberOfSegments) {
-                double ans = 0;
+            public static double length(double[] p, double x1, double x2, int n) {
                 /** add you code below
                  */
-        double step =(x2-x1)/numberOfSegments;
-        for (int i=0;i<numberOfSegments;i++) {
-            double startx = x1+i * step;
-            double endx = x1+(i+1)*step;
-        
-            double starty=f(p,startx);
-            double endy = f(p,endx);
-        
-            double segmLength=Math.sqrt(step*step +(endy-starty)*(endy-starty));
-            ans += segmLength;
-        }
-                 /////////////////// */
-                return ans;
-            }
+
+                    if (n <= 0) return 0;
+                    if (x1 == x2) return 0;
+
+                    if (x2 < x1) { double t = x1; x1 = x2; x2 = t; }
+
+                    double dx = (x2 - x1) / n;
+                    double sum = 0;
+
+                    double prevX = x1;
+                    double prevY = f(p, prevX);
+
+                    for (int i = 1; i <= n; i++) {
+                        double currX = x1 + i * dx;
+                        double currY = f(p, currX);
+
+                        double dxSeg = currX - prevX;
+                        double dySeg = currY - prevY;
+
+                        sum += Math.sqrt(dxSeg*dxSeg + dySeg*dySeg);
+
+                        prevX = currX;
+                        prevY = currY;
+                    }
+
+                    return sum;
+                }
+
+
+
+
+
+                /////////////////// */
+
             
             /**
              * Given two polynomial functions (p1,p2), a range [x1,x2] and an integer representing the number of Trapezoids between the functions (number of samples in on each polynom).
@@ -213,60 +242,79 @@
                 double totalArea = 0;
                 /** add you code below
                  */
-                ArrayList<Double> intersections = new ArrayList();
-                intersections.add(x1);
-                intersections.add(x2);
-                int check = 10000;
-                double step = (x2 - x1) / check;
-                for (int i = 0; i < check; i++) {
-                    double leftx = x1 + i * step;
-                    double rightx = x1 + (i + 1) * step;
-        
-                    double difLeft = f(p1, leftx) - f(p2, leftx);
-                    double difRight = f(p1, rightx) - f(p2, rightx);
-        
-                    if (difLeft * difRight <= 0) {
-                        double intersection = sameValue(p1, p2, leftx, rightx, EPS);
-        
-        
-                        boolean alrdeyExist = false;
-                        for (double exist : intersections) {
-                            if (Math.abs(exist - intersection) <= EPS) {
-                                alrdeyExist = true;
-                                break;
-                            }
-                        }
-                        if (!alrdeyExist) {
-                            intersections.add(intersection);
-        
-                        }
+                    if (x2 < x1) { double t = x1; x1 = x2; x2 = t; }
+
+                    ArrayList<Double> xs = new ArrayList<>();
+                    xs.add(x1);
+                    xs.add(x2);
+
+                    // Build diff polynomial
+                    int m = Math.max(p1.length, p2.length);
+                    double[] diff = new double[m];
+                    for (int i = 0; i < m; i++) {
+                        double a = i < p1.length ? p1[i] : 0;
+                        double b = i < p2.length ? p2[i] : 0;
+                        diff[i] = a - b;
                     }
+
+                    // Detect intersections
+                    int samples = 1000;
+                    double step = (x2 - x1) / samples;
+                    double prevX = x1;
+                    double prevF = f(diff, prevX);
+
+                    for (int i = 1; i <= samples; i++) {
+                        double currX = x1 + i * step;
+                        double currF = f(diff, currX);
+
+                        if (prevF * currF <= 0) {
+                            double root = sameValue(p1, p2, prevX, currX, EPS);
+
+                            boolean exists = false;
+                            for (double v : xs) {
+                                if (Math.abs(v - root) < EPS) { exists = true; break; }
+                            }
+                            if (!exists) xs.add(root);
+                        }
+
+                        prevX = currX;
+                        prevF = currF;
+                    }
+
+                    // Sort intervals
+                    Collections.sort(xs);
+
+                    // Compute area in each interval
+                    double total = 0;
+                    for (int i = 0; i < xs.size() - 1; i++) {
+                        double L = xs.get(i);
+                        double R = xs.get(i + 1);
+                        total += areaInsubRange(p1, p2, L, R, numberOfTrapezoid);
+                    }
+
+                    return total;
                 }
-                Collections.sort(intersections);
-                for (int i = 0; i < intersections.size() - 1; i++) {
-                    double subx1 = intersections.get(i);
-                    double subx2 = intersections.get(i + 1);
-                    double subArea = areaInsubRange(p1, p2, subx1, subx2, numberOfTrapezoid);
-                    totalArea += subArea;
-        
+
+
+        public static  double areaInsubRange(double[]p1,double[]p2,double x1,double x2,int numberOfTrapezoid) {
+
+                double dx = (x2 - x1) / numberOfTrapezoid;
+                double sum = 0;
+
+                for (int i = 0; i < numberOfTrapezoid; i++) {
+                    double lx = x1 + i * dx;
+                    double rx = lx + dx;
+                    double h1 = Math.abs(f(p1, lx) - f(p2, lx));
+                    double h2 = Math.abs(f(p1, rx) - f(p2, rx));
+                    sum += dx * (h1 + h2) / 2;
                 }
-                return totalArea;
+                return sum;
             }
-        private static  double areaInsubRange(double[]p1,double[]p2,double x1,double x2,int numberOfTrapezoid) {
-        
-                double area = 0;
-                double width = (x2-x1)/numberOfTrapezoid;
-        for (int i=0;i<numberOfTrapezoid;i++) {
-            double leftx = x1+i*width;
-            double rightx = x1+(i+1)*width;
-        
-            double h1=Math.abs(f(p1,leftx)-f(p2,leftx));
-            double h2=Math.abs(f(p1,rightx)-f(p2,rightx));
-            area += width*(h1+h2)/2;
-        }
+
+
                  /////////////////// */
-                return area;
-            }
+
+
             /**
              * This function computes     the array representation of a polynomial function from a String
              * representation. Note:given a polynomial function represented as a double array,
